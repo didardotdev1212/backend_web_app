@@ -16,7 +16,6 @@ const register = async (req: Request, res: Response) => {
         .status(400)
         .json({ success: false, message: "Invalid email format" });
     }
-    /// 8 characters, 1 uppercase, 1 lowercase, 1 number
     const passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (!passwordregex.test(password)) {
       return res.status(400).json({
@@ -81,5 +80,14 @@ const login = async (req: Request, res: Response) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
+const profile = async (req: any, res: Response) => {
+  const iserid = req.user.id;
+  const user = await db("users")
+    .select("id", "email")
+    .where({ id: iserid })
+    .first();
 
-export { register, login };
+  return res.json({ success: true, message: "User profile", data: user });
+};
+
+export { register, login, profile };
