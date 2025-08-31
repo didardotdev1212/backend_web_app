@@ -1,11 +1,85 @@
 import { Request, Response } from "express";
 import db from "../lib/knex";
+import bcrypt from "bcryptjs";
+import jose from "jose";
 const register = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Email and password are required" });
+  }
+  try {
+    const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailregex.test(email)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid email format" });
+    }
+    /// 8 characters, 1 uppercase, 1 lowercase, 1 number
+    const passwordregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    if (!passwordregex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one number",
+      });
+    }
+    const userexist = await db("users").where({ email }).first();
+    if (userexist) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Email already exists" });
+    }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await db("users").insert({ email, password: hashedPassword });
+    return res
+      .status(201)
+      .json({ success: true, message: "User registered successfully" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Email and password are required" });
+    }
+    //1. check if user exists
+    const user = await db("users")
+      .select("id", "email", "password")
+      .where({ email })
+      .first();
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials" });
+    }
+    //2. check if password is correct
+    const isMatch = await bcrypt.compare(password, user.password);
 
-
-
-    
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials" });
+    }
+    //3. create a token
+    const token = await new jose.SignJWT({ email: user.email, id: user.id })
+      .setProtectedHeader({ alg: "HS256" })
+      .setExpirationTime("7d")
+      .sign(new TextEncoder().encode(process.env.JWT_SECRET));
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
-export { register };
+export { register, login };
