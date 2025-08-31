@@ -2,6 +2,7 @@ import "dotenv/config"; /// to load the environment variables from the .env file
 // 1. Import necessary modules
 import express from "express";
 import TodoRoutes from "./Routes/Todos";
+import AuthRoutes from "./Routes/Auth"; // 1. Import the Auth routes
 /// import cors
 import cors from "cors";
 // 2. Create an instance of the express application
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
     message: "Welcome to the Express server!",
   });
 });
+app.use("/auth", AuthRoutes); // 2. Use the Auth routes
 app.use("/todos", TodoRoutes);
 
 // 5. Start the server and listen on port 5000
