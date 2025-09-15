@@ -1,5 +1,5 @@
 import jose from "jose";
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import db from "../lib/knex";
 
 const AuthUser = async (req: any, res: Response, next: NextFunction) => {

@@ -1,8 +1,10 @@
-import { register, login, profile } from "../Controllers/Auth";
+import { register, login, profile, UploadAvatar } from "../Controllers/Auth";
 import { Router } from "express";
 import AuthUser from "../Middleware/AuthUser";
+import upload from "../Middleware/Upload";
 const router = Router();
 router.post("/register", register);
 router.post("/login", login);
 router.get("/profile", AuthUser, profile);
+router.post("/upload-avatar", AuthUser, upload.single("file"), UploadAvatar);
 export default router;

@@ -89,5 +89,17 @@ const profile = async (req: any, res: Response) => {
 
   return res.json({ success: true, message: "User profile", data: user });
 };
+const UploadAvatar = async (req: any, res: Response) => {
+  /// save path to database
+  const userId = req.user.id;
+  const profile = await db("users").where({ id: userId }).first();
+  /// save file path to database
+  // await db("users").where({ id: userId }).update({ avatar: req.file.path });
 
-export { register, login, profile };
+  return res.json({
+    success: true,
+    message: `${profile.email} avatar uploaded successfully`,
+    data: req.file,
+  });
+};
+export { register, login, profile, UploadAvatar };
