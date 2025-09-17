@@ -4,6 +4,7 @@ import express from "express";
 import TodoRoutes from "./Routes/Todos";
 import AuthRoutes from "./Routes/Auth"; // 1. Import the Auth routes
 import CategoryRoutes from "./Routes/categories"; // import category routes
+import Coursesroutes from "./Routes/courses"; // import courses routes
 /// import cors
 import cors from "cors";
 // 2. Create an instance of the express application
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 app.use("/auth", AuthRoutes); // 2. Use the Auth routes
 app.use("/todos", TodoRoutes);
 app.use("/categories", CategoryRoutes); // use category routes
+app.use("/courses", Coursesroutes); // use courses routes
 
 // 5. Start the server and listen on port 5000
 app.listen(5000, () => {
