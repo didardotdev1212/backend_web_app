@@ -15,6 +15,9 @@ const CreateCourse = async (req: any, res: Response) => {
       created_by: user_id,
       created_at: new Date(),
     });
+    res
+      .status(201)
+      .json({ success: true, message: "Course created successfully" });
   } catch (error) {
     console.error("Error creating course:", error);
     res.status(500).json({ message: "Internal server error" });
