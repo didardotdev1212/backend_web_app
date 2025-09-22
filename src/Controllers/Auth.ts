@@ -32,7 +32,11 @@ const register = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await db("users").insert({ email, password: hashedPassword });
+    await db("users").insert({
+      email,
+      password: hashedPassword,
+      role: "STUDENT",
+    });
     return res
       .status(201)
       .json({ success: true, message: "User registered successfully" });
@@ -83,7 +87,7 @@ const login = async (req: Request, res: Response) => {
 const profile = async (req: any, res: Response) => {
   const iserid = req.user.id;
   const user = await db("users")
-    .select("id", "email")
+    .select("id", "email", "role")
     .where({ id: iserid })
     .first();
 

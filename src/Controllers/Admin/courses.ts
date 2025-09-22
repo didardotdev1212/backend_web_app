@@ -1,5 +1,5 @@
 import { Response } from "express";
-import db from "../lib/knex";
+import db from "../../lib/knex";
 
 const CreateCourse = async (req: any, res: Response) => {
   try {
