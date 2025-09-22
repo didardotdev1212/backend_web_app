@@ -11,6 +11,7 @@ import cors from "cors";
 const app = express();
 
 // use cors
+/// allow all origins
 app.use(cors());
 
 // 3. Use middleware to parse JSON request bodies
@@ -29,7 +30,7 @@ app.use("/categories", CategoryRoutes); // use category routes
 app.use("/admin/courses", ADMIN_Coursesroutes); // use courses routes
 
 // 5. Start the server and listen on port 5000
-app.listen(5000, () => {
+app.listen(9909, () => {
   console.log("Server is running on port 5000");
 });
 // 6. Export the app instance for testing or further configuration

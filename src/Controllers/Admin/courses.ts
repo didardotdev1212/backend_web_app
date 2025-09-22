@@ -1,6 +1,18 @@
 import { Response } from "express";
 import db from "../../lib/knex";
 
+const GetCourses = async (req: any, res: Response) => {
+  try {
+    const courses = await db("courses")
+      .select("*")
+      .where({ created_by: req.user.id });
+    res.status(200).json({ success: true, data: courses });
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const CreateCourse = async (req: any, res: Response) => {
   try {
     const { title, description, category_id, price } = req.body;
@@ -24,4 +36,4 @@ const CreateCourse = async (req: any, res: Response) => {
   }
 };
 
-export { CreateCourse };
+export { CreateCourse, GetCourses };
