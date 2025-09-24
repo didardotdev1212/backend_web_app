@@ -1,7 +1,6 @@
 import "dotenv/config"; /// to load the environment variables from the .env file
 // 1. Import necessary modules
 import express from "express";
-import TodoRoutes from "./Routes/Todos";
 import AuthRoutes from "./Routes/Auth"; // 1. Import the Auth routes
 import CategoryRoutes from "./Routes/categories"; // import category routes
 import ADMIN_Coursesroutes from "./Routes/Admin/courses"; // import courses routes (admin)
@@ -25,7 +24,6 @@ app.get("/", (req, res) => {
   });
 });
 app.use("/auth", AuthRoutes); // 2. Use the Auth routes
-app.use("/todos", TodoRoutes);
 app.use("/categories", CategoryRoutes); // use category routes
 app.use("/admin/courses", ADMIN_Coursesroutes); // use courses routes
 

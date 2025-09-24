@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { GetCategories } from "../Controllers/categories";
+import {
+  GetCategories,
+  GetCategoriesWithCourses,
+} from "../Controllers/categories";
 
 const router = Router();
 
 router.get("/", GetCategories);
+router.get("/recent-courses", GetCategoriesWithCourses);
 
 export default router;
