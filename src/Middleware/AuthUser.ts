@@ -13,8 +13,6 @@ const AuthUser = async (req: any, res: Response, next: NextFunction) => {
       token,
       new TextEncoder().encode(process.env.JWT_SECRET)
     );
-    console.log(payload);
-
     const user = await db("users").where({ id: payload.id }).first();
     if (!user) {
       return res.status(401).json({ success: false, message: "Unauthorized" });

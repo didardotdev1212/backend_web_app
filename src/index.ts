@@ -3,6 +3,7 @@ import "dotenv/config"; /// to load the environment variables from the .env file
 import express from "express";
 import AuthRoutes from "./Routes/Auth"; // 1. Import the Auth routes
 import CategoryRoutes from "./Routes/categories"; // import category routes
+import CoursesRoutes from "./Routes/courses"; // import courses routes
 import ADMIN_Coursesroutes from "./Routes/Admin/courses"; // import courses routes (admin)
 /// import cors
 import cors from "cors";
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 });
 app.use("/auth", AuthRoutes); // 2. Use the Auth routes
 app.use("/categories", CategoryRoutes); // use category routes
+app.use("/courses", CoursesRoutes); // use courses routes
 app.use("/admin/courses", ADMIN_Coursesroutes); // use courses routes
 
 // 5. Start the server and listen on port 5000
