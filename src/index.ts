@@ -29,9 +29,9 @@ app.use("/categories", CategoryRoutes); // use category routes
 app.use("/courses", CoursesRoutes); // use courses routes
 app.use("/admin/courses", ADMIN_Coursesroutes); // use courses routes
 
-// 5. Start the server and listen on port 5000
-app.listen(9909, () => {
-  console.log("Server is running on port 5000");
+// 5. Start the server and listen on port 31293
+app.listen(31293, () => {
+  console.log("Server is running on port 31293");
 });
 // 6. Export the app instance for testing or further configuration
 export default app;
