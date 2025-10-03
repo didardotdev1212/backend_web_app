@@ -41,6 +41,7 @@ const register = async (req: Request, res: Response) => {
       .status(201)
       .json({ success: true, message: "User registered successfully" });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -81,6 +82,7 @@ const login = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
@@ -98,7 +100,10 @@ const UploadAvatar = async (req: any, res: Response) => {
   const userId = req.user.id;
   const profile = await db("users").where({ id: userId }).first();
   /// save file path to database
-  // await db("users").where({ id: userId }).update({ avatar: req.file.path });
+  const file = req.file;
+  const fileUrl = `https://pub-8b2d28096f434a889120e98b6606a84e.r2.dev/${file.key}`;
+
+  await db("users").where({ id: userId }).update({ avatar: fileUrl });
 
   return res.json({
     success: true,
