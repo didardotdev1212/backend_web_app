@@ -21,6 +21,19 @@ const GetCourseByID = async (req: any, res: Response) => {
       course = { ...course, isEnrolled: !!isEnrolled };
     }
 
+    /// get leassons
+    let lessons = await db("lessons")
+      .where({ course_id: id })
+      .modify((queryBuilder: any) => {
+        if (!course.isEnrolled) {
+          queryBuilder.select("id", "name", "order");
+        } else {
+          queryBuilder.select("id", "name", "video_url", "order");
+        }
+      })
+      .orderBy("order", "asc");
+    course = { ...course, lessons };
+
     res.status(200).json({ success: true, data: course });
   } catch (error) {
     console.error("Error fetching courses:", error);
